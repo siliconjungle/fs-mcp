@@ -3,7 +3,7 @@ import { promises as fs } from 'node:fs';
 import path               from 'node:path';
 import { z }              from 'zod';
 
-const ROOT = process.cwd();
+const ROOT = path.resolve(process.env.FS_ROOT ?? process.cwd());
 
 /* ───────── helpers ─────────────────────────────────────────────────── */
 const safe = (rel) => {
