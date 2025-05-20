@@ -36,19 +36,17 @@ const LsShape = {
          .describe('Directory to list, relative to project root.'),
 };
 
-const ReadFileShape = {
-  path    : z.string().describe('File path, relative to project root.'),
-  encoding: z.enum(['utf8', 'base64']).default('utf8')
-             .describe('Decoding for file contents.'),
-};
+const Encoding = z
+  .enum(['utf8', 'utf-8', 'base64'])
+  .transform((e) => (e === 'utf-8' ? 'utf8' : e))     // normalise
+  .default('utf8');
 
+const ReadFileShape  = { path: z.string(), encoding: Encoding };
 const WriteFileShape = {
-  path    : z.string().describe('Target file path.'),
-  data    : z.string().describe('Raw text or base64-encoded bytes.'),
-  encoding: z.enum(['utf8', 'base64']).default('utf8')
-             .describe('Interpretation of “data”.'),
-  append  : z.boolean().optional()
-             .describe('If true, append instead of overwrite.'),
+  path: z.string(),
+  data: z.string(),
+  encoding: Encoding,
+  append: z.boolean().optional(),
 };
 
 const MkdirShape = {
